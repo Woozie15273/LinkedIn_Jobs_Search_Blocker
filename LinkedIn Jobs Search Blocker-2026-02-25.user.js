@@ -10,6 +10,9 @@
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
+// @namespace https://greasyfork.org/users/1574228
+// @downloadURL https://update.greasyfork.org/scripts/567415/LinkedIn%20Jobs%20Search%20Blocker.user.js
+// @updateURL https://update.greasyfork.org/scripts/567415/LinkedIn%20Jobs%20Search%20Blocker.meta.js
 // ==/UserScript==
 
 
