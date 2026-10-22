@@ -1,55 +1,50 @@
 
 # [LinkedIn Jobs Search Blocker](https://greasyfork.org/en/scripts/567415-linkedin-jobs-search-blocker)
 
-A technical userscript designed to filter LinkedIn job search results using keyword matching and regular expressions. This tool allows for a cleaner browsing experience by hiding job postings that match user-defined criteria.
+Hide LinkedIn job postings using custom keywords or regular expressions.
 
----
+## Features
 
-## Module Overview
+- Keyword and regex filtering
+- Automatic hiding of matching jobs
+- Works with LinkedIn dynamic loading and infinite scrolling
+- Local storage via Tampermonkey
+- Manage filters from the Tampermonkey menu
 
-The script is organized into five functional layers that work in tandem to manage data, monitor the page, and update the user interface.
+## Usage
 
+Add a filter:
 
+```
+Block Keyword / Regex
+```
 
-### 1. Keyword Management Module
-This module acts as the data controller for the script. It manages the storage and validation of filtering criteria.
-* **Local Persistent Storage:** Utilizes `GM_getValue` and `GM_setValue` to store keywords directly in your browser's local script storage. This ensures your list remains private and persists across sessions without needing an external database.
-* **Regex Validation:** Includes a safety check (`isValidRegex`) to ensure that any pattern entered by the user will not crash the script.
-* **Pattern Caching:** To maintain performance, keywords are compiled into a `cachedPatterns` array, allowing for rapid execution during page scrolls.
+Remove a filter:
 
-### 2. Blocking Module
-The core logic responsible for modifying the Document Object Model (DOM).
-* **CSS Injection:** Injects a style tag into the document head that sets `.blocked-job` to `display: none !important`.
-* **Class Toggling:** Scans the `innerText` of job cards. If a match is found against the cached patterns, it applies the hidden class; otherwise, it ensures the class is removed.
+```
+Unblock: <keyword>
+```
 
-### 3. Dynamic Loading Module
-LinkedIn uses asynchronous loading to populate job lists as users scroll. This module ensures new content is filtered as it appears.
-* **MutationObserver:** Monitors the `.scaffold-layout__list` container for changes. Whenever new job cards are added to the DOM, the observer triggers a re-scan.
-* **Debouncing:** Uses a `debounce` helper to limit the frequency of the blocking function, preventing performance lag during rapid scrolling.
+Remove all filters:
 
-### 4. UI Layer
-Integrates directly with the browser extension interface to provide user controls without requiring manual code edits.
-* **Menu Commands:** Uses `GM_registerMenuCommand` to add "Block Keyword" and "Unblock" options to the extension's popup menu.
-* **Real-time Refresh:** When a user adds or removes a keyword via the menu, the script automatically re-runs the blocking logic and rebuilds the menu to reflect the current state.
+```
+Unblock All Keywords
+```
 
-### 5. Initialization Layer
-The entry point of the script that orchestrates the startup sequence.
-* **Lifecycle:** It waits for the specific LinkedIn job list selector to load, injects the necessary CSS, loads saved patterns, and attaches the observers.
+## Installation
 
----
+1. Install Tampermonkey.
+2. Create a new userscript.
+3. Paste the script and save.
+4. Open LinkedIn Jobs.
 
-## Cooperation Workflow
+## Notes
 
-1. **Startup:** The Initialization Layer waits for the page to be ready and calls the Keyword Management Module to load saved filters from local storage.
-2. **Filtering:** The Blocking Module performs an initial pass on visible jobs.
-3. **Monitoring:** The Dynamic Loading Module starts an observer. As the user scrolls and LinkedIn fetches more jobs, these new elements are automatically sent to the Blocking Module.
-4. **Interaction:** If a user interacts with the UI Layer to add a new keyword, the Keyword Management Module updates the local cache, and the Blocking Module immediately updates the visibility of all jobs on the page.
+- Matching is case-insensitive.
+- Regular expressions are supported.
+- Filters are stored locally.
+- Designed for LinkedIn's dynamic SPA interface.
 
----
+## Disclaimer
 
-## Setup
-
-1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension for your browser.
-2. Create a new script in the Tampermonkey dashboard.
-3. Paste the code into the editor and save.
-4. Navigate to the LinkedIn Jobs search page to begin filtering.
+Not affiliated with LinkedIn.
